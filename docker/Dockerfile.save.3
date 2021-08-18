@@ -1,0 +1,11 @@
+FROM ubuntu:latest
+ENV TZ=Europe/Minsk
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+ && apt-get -y update \
+ && apt-get -y install apache2 curl
+EXPOSE 80 RUN curl -O "https://webpagetmp.blob.core.windows.net/web-page/index.html" \ && curl -O 
+"https://webpagetmp.blob.core.windows.net/web-page/photo.jpg" RUN cp -f index.html var/www/html/index.html \ && cp 
+-f photo.jpg var/www/html/photo.jpg
+#CMD ["apachectl", "-D", "FOREGROUND"]
+#RUN echo "ServerName 10.0.0.4:80" >> /etc/apache2/apache2.conf
+CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]

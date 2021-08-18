@@ -1,0 +1,8 @@
+FROM ubuntu:latest
+RUN apt-get -y update
+RUN apt-get -y install apache2
+RUN apt-get install curl
+RUN curl -O "https://webpagetmp.blob.core.windows.net/web-page/index.html"
+RUN cp -f index.html /var/www/html/index.html
+RUN curl -O "https://webpagetmp.blob.core.windows.net/web-page/photo.jpg"https://webpagetmp.blob.core.windows.net/web-page/photo.jpg
+
