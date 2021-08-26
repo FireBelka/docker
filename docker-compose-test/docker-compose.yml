@@ -4,17 +4,13 @@ services:
   build: server/
   expose:
   - 3306
-  - 1234
-  - 1431
-  - 1434
-  - 1433
+  - 22
   ports:
   - 3306:3306
-  - 1234:1234
-  - 1431:1431
-  - 1433:1433
-  - 1434:1434
-  container_name: mssql
+  - 22:22
+  container_name: mysql_server
+  volumes:
+  - DataVolume1:/datavolume1/
   environment:
   - MYSQL_ROOT_PASSWORD=Cat_1234
   - MSSQL_SA_PASSWORD=Cat_1234
@@ -22,9 +18,25 @@ services:
   - MYSQL_USER=Belka
   - MYSQL_PASSWORD=Cat_1234
   - ACCEPT_EULA="Y"
+  networks:
+  - network1
+  healthcheck:
+    test: mysql -h localhost  -u root -pCat_1234 -e 'SHOW DATABASES;'
+    interval: 2s
+    retries: 10
  client:
   build: client/
-  command: python ./client.py
-  network_mode: host
+  volumes:
+  - DataVolume1:/datavolume1/
+  - /var/run/docker.sock:/var/run/docker.sock
+  command: python3 /client/client1.py
+  networks:
+  - network1
   depends_on:
   - server
+volumes:
+  DataVolume1:
+#    external: true
+
+networks:
+  network1:

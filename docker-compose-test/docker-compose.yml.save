@@ -1,0 +1,31 @@
+version: '3'
+services:
+ server:
+  build: server/
+  expose:
+  - 3306
+  - 80
+  ports:
+  - 3306:3306
+  - 80:80
+  - 1431:1431
+  - 1433:1433
+  - 1434:1434
+  container_name: mssql
+  volumes:
+  - DataVolume1:/datavolume1
+  environment:
+  - MYSQL_ROOT_PASSWORD=Cat_1234
+  - MSSQL_SA_PASSWORD=Cat_1234
+  - MYSQL_PORT=3306
+  - MYSQL_USER=Belka
+  - MYSQL_PASSWORD=Cat_1234
+  - ACCEPT_EULA="Y"
+ client:
+  build: client/
+  volumes:
+  - DataVolume1:/datavolume1
+  command: python ./client1.py
+  network_mode: host
+  depends_on:
+  - server
